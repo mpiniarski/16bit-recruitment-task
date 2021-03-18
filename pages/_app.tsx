@@ -1,8 +1,13 @@
 import '../styles/globals.scss'
-import type { AppProps /*, AppContext */ } from 'next/app'
+import type {AppProps} from 'next/app'
+import Head from "next/head";
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
-}
+const MyApp = ({Component, pageProps}: AppProps) => <>
+  <Head>
+    <title>Simple Roulette - 16bit Recruitment task </title>
+    <link rel="icon" href="/favicon.ico"/>
+  </Head>
+  <Component {...pageProps} />
+</>
 
 export default MyApp

@@ -1,63 +1,62 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.scss'
+import styles from './index.module.scss'
+import RouletteWheel from "components/roulette-wheel";
+import {RandomResult, ResultColor} from "pages/api/random-result";
+import {useState} from "react";
 
-export default () => (
-  <div className={styles.container}>
-    <Head>
-      <title>Simple Roulette - 16bit Recruitment task </title>
-      <link rel="icon" href="/favicon.ico"/>
-    </Head>
+type UserBet = {
+  color?: ResultColor
+}
 
-    <main className={styles.main}>
-      <h1 className={styles.title}>
-        Simple Roulette game - test your luck!
-      </h1>
+const IndexPage = () => {
 
-      <p className={styles.description}>
-        Get started by editing{' '}
-        <code className={styles.code}>pages/index.js</code>
-      </p>
+  const [userBet, setUserBet] = useState<UserBet>({})
+  const [result, setResult] = useState<RandomResult>()
+  const [userResults, setUserResults] = useState<boolean[]>([])
 
-      <div className={styles.grid}>
-        <a href="https://nextjs.org/docs" className={styles.card}>
-          <h3>Documentation &rarr;</h3>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
+  const spin = () => {
+    console.log("dupa")
+    if (userBet.color === undefined) throw Error("Invalid state")
 
-        <a href="https://nextjs.org/learn" className={styles.card}>
-          <h3>Learn &rarr;</h3>
-          <p>Learn about Next.js in an interactive course with quizzes!</p>
-        </a>
+    // TODO API call
+    let newResult = {color: ResultColor.BLACK};
+    setResult(newResult)
 
-        <a
-          href="https://github.com/vercel/next.js/tree/master/examples"
-          className={styles.card}
-        >
-          <h3>Examples &rarr;</h3>
-          <p>Discover and deploy boilerplate example Next.js projects.</p>
-        </a>
+    setUserResults([newResult.color === userBet.color, ...userResults.slice(0,8)])
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          className={styles.card}
-        >
-          <h3>Deploy &rarr;</h3>
-          <p>
-            Instantly deploy your Next.js site to a public URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+    setUserBet({})
+  }
 
-    <footer className={styles.footer}>
-      <a
-        href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Powered by{' '}
-        <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo}/>
-      </a>
-    </footer>
-  </div>
-)
+  return (
+    <div className={styles.container}>
+      <main className={styles.main}>
+        <h1 className={styles.title}>
+          Simple Roulette game - test your luck!
+        </h1>
+
+        <RouletteWheel
+          result={result?.color}
+        />
+        <button disabled={userBet.color === undefined} type={"button"} onClick={spin}>Spin the wheel</button>
+
+        <button type={"button"} onClick={() => setUserBet({color: ResultColor.RED})}>RED</button>
+        <button type={"button"} onClick={() => setUserBet({color: ResultColor.BLACK})}>BLACK</button>
+
+        <div>
+          <h2>Previous results:</h2>
+          {
+            userResults.map((userResult, index) =>
+              <p className={styles.userResult + " " + (index === 0 ? styles.last : "")}>{userResult ? "Success!" : "Failure :-("}</p>)
+          }
+
+
+        </div>
+      </main>
+
+      <footer className={styles.footer}>
+        <p>16bit recruitment task - made by Marcin Piniarski</p>
+      </footer>
+    </div>
+  )
+}
+
+export default IndexPage
