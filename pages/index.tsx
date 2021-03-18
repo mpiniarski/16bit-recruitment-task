@@ -3,16 +3,33 @@ import RouletteWheel from "components/roulette-wheel";
 import {RandomResult, ResultColor} from "pages/api/random-result";
 import {useState} from "react";
 import axios from "axios";
+import {useStorageState} from "react-storage-hooks";
+import {StorageObj} from "react-storage-hooks/dist/common";
 
 type UserBet = {
   color?: ResultColor
 }
 
+// needed to use browser storage (session/local) with SSR
+const serverSideStorage: StorageObj = {
+  getItem: () => null,
+  setItem: () => {
+  },
+  removeItem: () => {
+  },
+};
+
+const isBrowser = () => typeof window !== 'undefined';
+
 const IndexPage = () => {
 
   const [userBet, setUserBet] = useState<UserBet>({})
   const [result, setResult] = useState<RandomResult>()
-  const [userResults, setUserResults] = useState<boolean[]>([])
+  const [userResults, setUserResults] = useStorageState<boolean[]>(
+    isBrowser() ? sessionStorage : serverSideStorage,
+    'user-results',
+    []
+  );
 
   const spin = async () => {
     if (userBet.color === undefined) throw Error("Invalid state")
