@@ -2,6 +2,7 @@ import styles from './index.module.scss'
 import RouletteWheel from "components/roulette-wheel";
 import {RandomResult, ResultColor} from "pages/api/random-result";
 import {useState} from "react";
+import axios from "axios";
 
 type UserBet = {
   color?: ResultColor
@@ -13,16 +14,15 @@ const IndexPage = () => {
   const [result, setResult] = useState<RandomResult>()
   const [userResults, setUserResults] = useState<boolean[]>([])
 
-  const spin = () => {
-    console.log("dupa")
+  const spin = async () => {
     if (userBet.color === undefined) throw Error("Invalid state")
 
-    // TODO API call
-    let newResult = {color: ResultColor.BLACK};
+    const response = await axios.get<RandomResult>('api/random-result');
+    const newResult = response.data;
+
     setResult(newResult)
 
-    setUserResults([newResult.color === userBet.color, ...userResults.slice(0,8)])
-
+    setUserResults([newResult.color === userBet.color, ...userResults.slice(0, 8)])
     setUserBet({})
   }
 

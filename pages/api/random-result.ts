@@ -9,9 +9,14 @@ export type RandomResult = {
 }
 
 const handler = (req: NextApiRequest, res: NextApiResponse<RandomResult>) => {
-  res
-    .status(200)
-    .json({ color: randomInt(0,1)  })
+  if (req.method === 'GET') {
+    res
+      .status(200)
+      .json({ color: randomInt(0,1)  })
+  } else {
+    res.status(405).end()
+  }
+
 };
 
 const randomInt = (min: number, max: number) =>
