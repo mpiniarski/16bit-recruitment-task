@@ -4,11 +4,11 @@ export enum ResultColor {
   RED, BLACK
 }
 
-export type RandomResult = {
+export type Result = {
   readonly color: ResultColor
 }
 
-const handler = (req: NextApiRequest, res: NextApiResponse<RandomResult>) => {
+const handler = (req: NextApiRequest, res: NextApiResponse<Result>) => {
   if (req.method === 'GET') {
     res
       .status(200)
