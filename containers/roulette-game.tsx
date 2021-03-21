@@ -6,7 +6,7 @@ import axios from "axios";
 import BettingTable from "components/betting-table";
 import BetResults from "components/bet-results";
 import dynamic from "next/dynamic";
-import styles from "./roulette-game.module.css"
+import styles from "./roulette-game.module.scss"
 import RouletteWheelLoader from "components/roulette-wheel.loader";
 
 const RouletteWheel = dynamic(

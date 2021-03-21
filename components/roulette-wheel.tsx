@@ -1,7 +1,7 @@
 import {ResultColor} from "pages/api/random-result";
 import {useEffect, useRef, useState} from "react";
 import {DisplayElements, setUp, spin} from "components/roulette-wheel.animation";
-import styles from "./roulette-wheel.module.css"
+import styles from "./roulette-wheel.module.scss"
 import RouletteWheelLoader from "components/roulette-wheel.loader";
 
 
@@ -50,13 +50,13 @@ const RouletteWheel = ({result, onSpin, canSpin, onAnimationStart, onAnimationEn
     }
   }, [displayElements, tutorialPhase, canSpin, result])
 
-  debugger
   return <>
     {
       displayElements === undefined &&
       <RouletteWheelLoader/>
     }
     <div
+      data-testid="RouletteWheel"
       className={`${styles.canvasContainer} ${displayElements !== undefined ? styles.visible : ""} ${canSpin ? styles.enabled : ""}`}
       onClick={() => {
         if (canSpin) {

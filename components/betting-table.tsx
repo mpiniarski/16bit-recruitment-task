@@ -7,15 +7,17 @@ const BettingTable = ({currentBet, onBet, uiBlocked}: {
   onBet: (bet: Bet) => void,
   uiBlocked: boolean
 }) =>
-  <div className={`${styles.container}`}>
+  <div data-testid="BettingTable"className={`${styles.container}`}>
     <h1>Choose your bet:</h1>
     <div className={`${styles.betButtons}`}>
       <div
+        data-testid="Red"
         className={`${styles.button} ${styles.red} ${currentBet.color === ResultColor.RED ? styles.bet : ""} ${uiBlocked ? styles.disabled : ""}`}
         onClick={() => !uiBlocked && onBet({
           color: ResultColor.RED
         })}/>
       <div
+        data-testid="Black"
         className={`${styles.button} ${styles.black} ${currentBet.color === ResultColor.BLACK ? styles.bet : ""} ${uiBlocked ? styles.disabled : ""}`}
         onClick={() => !uiBlocked && onBet({
           color: ResultColor.BLACK

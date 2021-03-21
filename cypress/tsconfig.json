@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": [
+      "es5",
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "types": [
+      "cypress"
+    ],
+    "noEmit": true,
+    "strict": true,
+    "esModuleInterop": true
+  },
+  "include": [
+    "**/*.ts",
+    "../src/mutations/**/*.ts"
+  ]
+}
