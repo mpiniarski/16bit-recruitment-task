@@ -1,16 +1,20 @@
 import {useState} from "react";
 import {Result as SpinResult, ResultColor} from "pages/api/random-result";
 import {useStorageState} from "react-storage-hooks";
-import {isBrowser, serverSideStorage} from "utils";
+import {isBrowser, randomEvenInt, randomOddInt, serverSideStorage} from "utils";
 import axios from "axios";
 import BettingTable from "components/betting-table";
 import BetResults from "components/bet-results";
 import dynamic from "next/dynamic";
 import styles from "./roulette-game.module.css"
+import RouletteWheelLoader from "components/roulette-wheel.loader";
 
 const RouletteWheel = dynamic(
   () => import("components/roulette-wheel"),
-  {ssr: false}
+  {
+    ssr: false,
+    loading: ()=> <RouletteWheelLoader/>
+  }
 );
 
 // This type can be easily extended in the future e.g. to add betting on numbers, lows, highs, columns etc.
@@ -26,13 +30,11 @@ export type BetResult = {
 const RouletteGame = () => {
   const [bet, setBet] = useState<Bet>({})
   const [spinResult, setSpinResult] = useState<SpinResult>()
-
   const [prevBetResults, setPrevBetResults] = useStorageState<BetResult[]>(
     isBrowser() ? sessionStorage : serverSideStorage,
     'user-results',
     []
   );
-
   const [uiBlocked, setUiBlocked] = useState<boolean>(false)
 
   const spin = async () => {

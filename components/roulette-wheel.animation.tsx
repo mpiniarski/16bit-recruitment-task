@@ -55,7 +55,7 @@ export const setUp = (): DisplayElements => {
   rouletteContainer.addChild(ball);
 
   const spinText = new PIXI.Text(
-    'Bet!',
+    '',
     {fontFamily: 'Arial', fontSize: 60, fill: "white", dropShadow: true, fontWeight: "bold", align: 'center'}
   );
   spinText.x = app.renderer.width / 2;
