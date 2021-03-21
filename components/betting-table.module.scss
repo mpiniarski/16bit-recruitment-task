@@ -1,0 +1,77 @@
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.betButtons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.button {
+  $button-width: 90px;
+  $button-height: $button-width/2;
+
+  margin: 0 8px;
+  cursor: pointer;
+  width: 0;
+  height: 0;
+
+  border: $button-width solid transparent;
+  border-bottom: $button-height solid red;
+  position: relative;
+  top: -2*$button-height;
+
+  &:after {
+    content: '';
+    position: absolute;
+    left: -$button-width;
+    top: $button-height;
+    width: 0;
+    height: 0;
+    border: $button-width solid transparent;
+    border-top: $button-height solid red;
+  }
+}
+
+.button.black {
+  $shape-color: black;
+
+  border-bottom-color: $shape-color;
+
+  &::after {
+    border-top-color: $shape-color;
+  }
+}
+
+.button.red {
+  $shape-color: crimson;
+
+  border-bottom-color: $shape-color;
+
+  &::after {
+    border-top-color: $shape-color;
+  }
+}
+
+.button.disabled {
+  cursor: auto;
+}
+
+.button.bet {
+  cursor: auto;
+
+  color: darkgreen;
+  &:before {
+    content: "$";
+    font-size: 47px;
+    position: absolute;
+    z-index: 1;
+    top: 14px;
+    left: -12px;
+  }
+}

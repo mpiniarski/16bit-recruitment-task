@@ -3,14 +3,14 @@ import RouletteGame from "containers/roulette-game";
 
 const IndexPage = () =>
   <div className={styles.container}>
-    <main className={styles.main}>
+
+    <header>
       <h1 className={styles.title}>
         Simple Roulette game - test your luck!
       </h1>
+    </header>
 
-      <RouletteGame/>
-
-    </main>
+    <RouletteGame/>
 
     <footer className={styles.footer}>
       <p>16bit recruitment task - made by Marcin Piniarski</p>

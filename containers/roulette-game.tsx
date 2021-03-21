@@ -6,6 +6,7 @@ import axios from "axios";
 import BettingTable from "components/betting-table";
 import BetResults from "components/bet-results";
 import dynamic from "next/dynamic";
+import styles from "./roulette-game.module.css"
 
 const RouletteWheel = dynamic(
   () => import("components/roulette-wheel"),
@@ -25,11 +26,14 @@ export type BetResult = {
 const RouletteGame = () => {
   const [bet, setBet] = useState<Bet>({})
   const [spinResult, setSpinResult] = useState<SpinResult>()
-  const [betResults, setBetResults] = useStorageState<BetResult[]>(
+
+  const [prevBetResults, setPrevBetResults] = useStorageState<BetResult[]>(
     isBrowser() ? sessionStorage : serverSideStorage,
     'user-results',
     []
   );
+
+  const [uiBlocked, setUiBlocked] = useState<boolean>(false)
 
   const spin = async () => {
     setSpinResult(undefined)
@@ -37,22 +41,38 @@ const RouletteGame = () => {
 
     const response = await axios.get<SpinResult>('api/random-result');
     setSpinResult(response.data)
-
-    setBetResults([{bet: {color: bet.color}, spinResult: response.data}, ...betResults.slice(0, 8)])
-    setBet({})
   }
 
-  return <>
-    <RouletteWheel
-      result={spinResult?.color}
-      onSpin={spin}
-      canSpin={bet.color === undefined}
-    />
+  return <div className={styles.container}>
+    <main className={styles.main}>
+      <RouletteWheel
+        result={spinResult?.color}
+        onSpin={spin}
+        canSpin={bet.color !== undefined && !uiBlocked}
+        onAnimationStart={() => {
+          setUiBlocked(true)
+        }}
+        onAnimationEnd={() => {
+          if (bet.color !== undefined && spinResult !== undefined) {
+            setUiBlocked(false)
+            setPrevBetResults([
+              {bet: {color: bet.color}, spinResult: spinResult},
+              ...prevBetResults.slice(0, 8)]
+            )
+          }
+        }}
+      />
+      <BettingTable
+        currentBet={bet}
+        onBet={(bet) => setBet(bet)}
+        uiBlocked={uiBlocked}
+      />
+    </main>
 
-    <BettingTable currentBet={bet} onBet={(bet) => setBet(bet)}/>
-
-    <BetResults betResults={betResults}/>
-  </>;
+    <aside className={styles.aside}>
+      <BetResults betResults={prevBetResults}/>
+    </aside>
+  </div>;
 };
 
 export default RouletteGame
