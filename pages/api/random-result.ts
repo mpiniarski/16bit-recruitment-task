@@ -1,4 +1,5 @@
 import {NextApiRequest, NextApiResponse} from "next";
+import {randomInt} from "utils";
 
 export enum ResultColor {
   RED, BLACK
@@ -18,8 +19,5 @@ const handler = (req: NextApiRequest, res: NextApiResponse<Result>) => {
   }
 
 };
-
-const randomInt = (min: number, max: number) =>
-  Math.floor(Math.random() * (max - min + 1) + min);
 
 export default handler

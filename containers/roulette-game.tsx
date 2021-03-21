@@ -3,9 +3,14 @@ import {Result as SpinResult, ResultColor} from "pages/api/random-result";
 import {useStorageState} from "react-storage-hooks";
 import {isBrowser, serverSideStorage} from "utils";
 import axios from "axios";
-import RouletteWheel from "components/roulette-wheel";
 import BettingTable from "components/betting-table";
 import BetResults from "components/bet-results";
+import dynamic from "next/dynamic";
+
+const RouletteWheel = dynamic(
+  () => import("components/roulette-wheel"),
+  {ssr: false}
+);
 
 // This type can be easily extended in the future e.g. to add betting on numbers, lows, highs, columns etc.
 // I assumed that in this simple roulette one can only bet on either black or red
@@ -27,6 +32,7 @@ const RouletteGame = () => {
   );
 
   const spin = async () => {
+    setSpinResult(undefined)
     if (bet.color === undefined) throw Error("Invalid state")
 
     const response = await axios.get<SpinResult>('api/random-result');
