@@ -1,4 +1,5 @@
-This is a 16 bit recruitment task - Simple Roulette Game.
+This is a reacruitement task I've made once - the Simple Roulette Game.
+It's a basic roulette game with quite advanced js based animations.
 
 ## Getting Started
 
